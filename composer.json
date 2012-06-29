@@ -1,0 +1,24 @@
+{
+    "name": "opensoft/php-wsdl-proxy-generator",
+    "type": "library",
+    "description": "Simple WSDL Proxy Generator",
+    "keywords": ["wsdl","proxy", "php", "generator"],
+    "homepage": "http://github.com/opensoft/php-wsdl-proxy-generator",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dmitry Petrov",
+            "email": "dmitry.petrov@opensoftdev.ru",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/console": "2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Opensoft": "src"
+        }
+    }
+}

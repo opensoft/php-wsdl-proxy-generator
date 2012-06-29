@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+# app/console
+<?php
+
+if (file_exists($loader = __DIR__.'/vendor/autoload.php')) {
+    require_once $loader;
+}
+
+use Symfony\Component\Console\Application;
+use Opensoft\WsdlProxyGenerator\Version;
+use Opensoft\WsdlProxyGenerator\Command\WsdlProxyGeneratorCommand;
+
+$application = new Application('WSDL parser and Proxy classes generator on PHP', Version::VERSION);
+$application->add(new WsdlProxyGeneratorCommand());
+$application->run();
