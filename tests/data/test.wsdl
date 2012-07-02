@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions  xmlns:ns="http://localhost" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:s1="http://schemas.xmlsoap.org/wsdl/soap/">
+    <types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://localhost" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:element name="TestRequest" type="ns:TestRequest"/>
+            <xs:element name="TestReply" type="ns:TestReply"/>
+            <xs:complexType name="TestRequest">
+                <xs:sequence>
+                    <xs:element name="TestDetail" type="ns:TestDetail" minOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>The TestDetail information.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="ExampleDetail" type="ns:ExampleDetail">
+                        <xs:annotation>
+                            <xs:documentation>The ExampleDetail information</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="RequestTimestamp" type="xs:dateTime"/>
+                    <xs:element name="TestString" type="ns:string"/>
+                    <xs:element name="TestArray" type="ns:TestArrayExample" maxOccurs="100"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="TestReply">
+                <xs:sequence>
+                    <xs:element name="Notifications" type="ns:TestArrayExample" maxOccurs="unbounded"/>
+                    <xs:element name="TestDetail" type="ns:TestDetail" minOccurs="0"/>
+                    <xs:element name="ReplyTimestamp" type="xs:dateTime"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="TestArrayExample">
+                <xs:all>
+                    <xs:element name="Title" type="ns:string" />
+                </xs:all>
+            </xs:complexType>
+            <xs:complexType name="TestDetail">
+                <xs:sequence>
+                    <xs:element name="MaximumNumberOfMatches" minOccurs="0">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:positiveInteger">
+                                <xs:maxInclusive value="10"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="ConvertToUpperCase" type="xs:boolean" minOccurs="0"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="ExampleDetail">
+                <xs:sequence>
+                    <xs:element name="Name" type="xs:string"/>
+                    <xs:element name="Value" type="xs:string"/>
+                    <xs:element name="Changes" type="ns:TestStatusType" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:simpleType name="TestStatusType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="UNDETERMINED"/>
+                    <xs:enumeration value="BUSINESS"/>
+                    <xs:enumeration value="RESIDENTIAL"/>
+                    <xs:enumeration value="INSUFFICIENT_DATA"/>
+                    <xs:enumeration value="UNAVAILABLE"/>
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType name="TestChangeType">
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="APARTMENT_NUMBER_NOT_FOUND">
+                        <xs:annotation>
+                            <xs:documentation>
+                                (EAS 100) Apartment number not found for this address.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="APARTMENT_NUMBER_REQUIRED">
+                        <xs:annotation>
+                            <xs:documentation>
+                                (EAS 101) Address requires apartment number.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="NORMALIZED">
+                        <xs:annotation>
+                            <xs:documentation>
+                                (EAS 102) Address normalized - abbreviations applied.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:enumeration>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:schema>
+    </types>
+    <message name="TestRequest">
+        <part name="TestRequest" element="ns:TestRequest"/>
+    </message>
+    <message name="TestReply">
+        <part name="TestReply" element="ns:TestReply"/>
+    </message>
+    <portType name="TestPortType">
+        <operation name="Test" parameterOrder="TestRequest">
+            <input message="ns:TestRequest"/>
+            <output message="ns:TestReply"/>
+        </operation>
+    </portType>
+    <binding name="TestServiceSoapBinding" type="ns:TestPortType">
+        <s1:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="Test">
+            <s1:operation soapAction="Test" style="document"/>
+            <input>
+                <s1:body use="literal"/>
+            </input>
+            <output>
+                <s1:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="TestService">
+        <port name="TestServicePort" binding="ns:TestServiceSoapBinding">
+            <s1:address location="https://localhost"/>
+        </port>
+    </service>
+</definitions>
