@@ -103,7 +103,7 @@ class Validators
      * @return string
      * @throws InvalidArgumentException
      */
-    static public function validateNamespace($namespace)
+    public static function validateNamespace($namespace)
     {
         $namespace = strtr($namespace, '/', '\\');
         if (!preg_match('/^(?:[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\\\?)+$/', $namespace)) {
@@ -128,9 +128,9 @@ class Validators
      * @return string
      * @throws RuntimeException
      */
-    static public function validateWsdl($wsdl)
+    public static function validateWsdl($wsdl)
     {
-        $soapClient = new SoapClient($wsdl);
+        $soapClient = @new SoapClient($wsdl, array('cache_wsdl' => WSDL_CACHE_NONE));
         unset($soapClient);
 
         return $wsdl;
@@ -143,7 +143,7 @@ class Validators
      * @param $dir
      * @return string
      */
-    static public function validateTargetDir($dir)
+    public static function validateTargetDir($dir)
     {
         if ($dir == null) {
             throw new InvalidArgumentException('The directory cannot be empty.');
@@ -163,7 +163,7 @@ class Validators
      * @param string $path
      * @return bool
      */
-    static public function validateLicensePath($path)
+    public static function validateLicensePath($path)
     {
         if ($path != null) {
             if (!file_exists($path)) {
@@ -182,7 +182,7 @@ class Validators
      * @static
      * @return array
      */
-    static public function getReservedWords()
+    public static function getReservedWords()
     {
         return self::$reservedWords;
     }

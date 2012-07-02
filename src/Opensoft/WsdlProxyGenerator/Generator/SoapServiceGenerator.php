@@ -21,7 +21,7 @@ class SoapServiceGenerator extends ProxyGeneratorAbstract
 {
     public function execute()
     {
-        $soapClient = new SoapClient($this->wsdlPath);
+        $soapClient = @new SoapClient($this->wsdlPath, array('cache_wsdl' => WSDL_CACHE_NONE));
         $operations = $soapClient->__getFunctions();
         $functions = array();
         foreach($operations as $operation) {
