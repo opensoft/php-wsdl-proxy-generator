@@ -24,38 +24,18 @@ class ComplexTypeAbstractTemplate extends TemplateAbstract
 abstract class {$this->className}
 {
     /**
-     * Holds the data as a key => value array
-     *
-     * @var array
-     */
-    protected \$values;
-
-    /**
-     * The name of the extended class/data type
-     *
-     * @var string
-     */
-    protected \$name;
-
-    /**
      * @param array \$options Data as key => value array
      */
     public function __construct(array \$options = null)
     {
         if (is_array(\$options)) {
             foreach (\$options as \$name => \$value) {
-                \$this->\$name = \$value;
+                \$functionName = 'set' . ucfirst(\$name);
+                if (method_exists(\$this, \$functionName)) {
+                    \$this->\$functionName(\$value);
+                }
             }
         }
-    }
-
-    /**
-     * @param string \$name
-     * @param string \$value
-     */
-    public function __set(\$name, \$value)
-    {
-        \$this->values[\$name] = \$value;
     }
 
     /**
@@ -66,10 +46,10 @@ abstract class {$this->className}
      */
     public function toArray(\$renderTopKey = false)
     {
-        \$returnArray = \$this->convertToArray(\$this->values);
+        \$returnArray = \$this->convertToArray(\$this->getListOfProperties());
 
         if (\$renderTopKey) {
-            return array(\$this->name => \$returnArray);
+            return array(static::CLASS_NAME => \$returnArray);
         } else {
             return \$returnArray;
         }
@@ -84,7 +64,7 @@ abstract class {$this->className}
     protected function convertToArray(\$arrayValues)
     {
         \$returnArray = array();
-        if (!empty(\$arrayValues) {
+        if (!empty(\$arrayValues)) {
             foreach (\$arrayValues as \$key => \$value) {
                 if (\$value instanceof self) {
                     \$returnArray[\$key] = \$value->toArray();
@@ -101,6 +81,24 @@ abstract class {$this->className}
         }
 
         return \$returnArray;
+    }
+
+    /**
+     * Returns array which contains all properties of the class
+     *
+     * @return array
+     */
+    private function getListOfProperties()
+    {
+        \$nameOfProperties = array();
+        \$reflector = new ReflectionClass(get_class(\$this));
+        \$properties = \$reflector->getProperties();
+        foreach(\$properties as \$reflectionProperty) {
+            \$reflectionProperty->setAccessible(true);
+            \$nameOfProperties[\$reflectionProperty->getName()] = \$reflectionProperty->getValue(\$this);
+        }
+
+        return \$nameOfProperties;
     }
 }
 

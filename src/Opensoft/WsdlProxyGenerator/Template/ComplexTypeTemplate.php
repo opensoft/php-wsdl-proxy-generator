@@ -24,6 +24,8 @@ class ComplexTypeTemplate extends TemplateAbstract
         return <<<TEXT
 class {$this->className} extends {$parentClassName}
 {
+    const CLASS_NAME = '{$this->className}';
+
 {$this->generateAttributesBlock()}
 {$this->generateGettersAndSettersBlock()}
 }
