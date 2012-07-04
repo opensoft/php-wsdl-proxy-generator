@@ -78,8 +78,8 @@ class {$this->className}
 
     public function __construct(\$soapClientClassName, \$wsdl, array \$options = array())
     {
-        if (!empty(self::\$classmap)) {
-            foreach(self::\$classmap as \$key => \$value) {
+        if (!empty(self::\$classMaps)) {
+            foreach(self::\$classMaps as \$key => \$value) {
                 if(!isset(\$options['classmap'][\$key])) {
                     \$options['classmap'][\$key] = \$value;
                 }
@@ -122,14 +122,14 @@ TEXT;
 TEXT;
         if (empty($this->classMaps)) {
             $result .= <<<TEXT
-    private \$classMaps = array();
+    private static \$classMaps = array();
 
 
 TEXT;
 
         } else {
             $result .= <<<TEXT
-    private \$classMaps = array(
+    private static \$classMaps = array(
 
 TEXT;
             foreach ($this->classMaps as $map) {
