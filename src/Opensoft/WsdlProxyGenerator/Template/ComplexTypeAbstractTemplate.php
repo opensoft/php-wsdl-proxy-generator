@@ -91,7 +91,7 @@ abstract class {$this->className}
     private function getListOfProperties()
     {
         \$nameOfProperties = array();
-        \$reflector = new ReflectionClass(get_class(\$this));
+        \$reflector = new \ReflectionClass(get_class(\$this));
         \$properties = \$reflector->getProperties();
         foreach(\$properties as \$reflectionProperty) {
             \$reflectionProperty->setAccessible(true);

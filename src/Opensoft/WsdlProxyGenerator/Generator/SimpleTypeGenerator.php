@@ -27,22 +27,24 @@ class SimpleTypeGenerator extends ProxyGeneratorAbstract
          */
         foreach ($simpleTypes as $simpleType) {
             $documentation = $this->parseElementDocumentation($simpleType);
-            $className = $simpleType->getAttribute('name');
-            // IMPORTANT: Need to filter out namespace on member if presented
-            if(strpos($className, ':')) { // keep the last part
-                list($tmp, $className) = explode(':', $className);
-            }
-            unset($tmp);
-            $template = new SimpleTypeTemplate($this->namespace, $className, $this->useBlock, $documentation, self::$license);
-            $enumerations = $this->parseEnumeration($simpleType);
-            if (!empty($enumerations)) {
-                foreach($enumerations as $enum) {
-                    $template->addConstant(array('name' => $enum['enumeration'], 'documentation' => $enum['documentation']));
+            if ($simpleType->hasAttribute('name')) {
+                $className = $simpleType->getAttribute('name');
+                // IMPORTANT: Need to filter out namespace on member if presented
+                if(strpos($className, ':')) { // keep the last part
+                    list($tmp, $className) = explode(':', $className);
                 }
-            }
-            self::addClass($className, array('class' => $className, 'namespace' => $this->namespace));
+                unset($tmp);
+                $template = new SimpleTypeTemplate($this->namespace, $className, $this->useBlock, $documentation, self::$license);
+                $enumerations = $this->parseEnumeration($simpleType);
+                if (!empty($enumerations)) {
+                    foreach($enumerations as $enum) {
+                        $template->addConstant(array('value' => $enum['enumeration'], 'documentation' => $enum['documentation']));
+                    }
+                }
+                self::addClass($className, array('class' => $className, 'namespace' => $this->namespace));
 
-            $this->saveCode($this->exportPath, $className, $template->generateCode());
+                $this->saveCode($this->exportPath, $className, $template->generateCode());
+            }
         }
     }
 }

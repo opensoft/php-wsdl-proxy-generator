@@ -93,33 +93,33 @@ EOT
             }
         }
 
-        $simpleTypeAbstractGenerator = new SimpleTypeAbstractGenerator($wsdl, $dir . 'SimpleType',
+        $generator = new SimpleTypeAbstractGenerator($wsdl, $dir . 'SimpleType',
             $namespace . '\\SimpleType', array(), $licensePath);
-        $simpleTypeAbstractGenerator->execute();
+        $generator->execute();
 
-        $complexTypeAbstractGenerator = new ComplexTypeAbstractGenerator($wsdl, $dir . 'ComplexType',
+        $generator = new ComplexTypeAbstractGenerator($wsdl, $dir . 'ComplexType',
             $namespace . '\\ComplexType', array($namespace . '\\SimpleType'), $licensePath);
-        $complexTypeAbstractGenerator->execute();
+        $generator->execute();
 
-        $simpleTypeGenerator = new SimpleTypeGenerator($wsdl, $dir . 'SimpleType',
+        $generator = new SimpleTypeGenerator($wsdl, $dir . 'SimpleType',
             $namespace . '\\SimpleType', array(), $licensePath);
-        $simpleTypeGenerator->execute();
+        $generator->execute();
 
-        $simpleTypeGenerator = new ComplexTypeGenerator($wsdl, $dir . 'ComplexType',
+        $generator = new ComplexTypeGenerator($wsdl, $dir . 'ComplexType',
             $namespace . '\\ComplexType', array($namespace . '\\SimpleType'), $licensePath);
-        $simpleTypeGenerator->execute();
+        $generator->execute();
 
-        $soapClientGenerator = new SoapClientGenerator($wsdl, $dir,
+        $generator = new SoapClientGenerator($wsdl, $dir,
             $namespace, array('RuntimeException', 'SoapFault', 'SoapClient as BaseSoapClient'), $licensePath);
-        $soapClientGenerator->execute();
+        $generator->execute();
 
-        $soapServiceGenerator = new SoapServiceGenerator($wsdl, $dir, $namespace,
+        $generator = new SoapServiceGenerator($wsdl, $dir, $namespace,
             array('RuntimeException', 'SoapFault',
                 'SoapClient as BaseSoapClient',
                 'InvalidArgumentException'),
             $licensePath);
-        $soapServiceGenerator->execute();
-
+        $generator->execute();
+        unset($generator);
     }
 
     /**
@@ -179,7 +179,7 @@ EOT
      * @param $text
      * @param string $style
      */
-    public function writeSection(OutputInterface $output, $text, $style = 'bg=blue;fg=white')
+    private function writeSection(OutputInterface $output, $text, $style = 'bg=blue;fg=white')
     {
         $output->writeln(array(
             '',

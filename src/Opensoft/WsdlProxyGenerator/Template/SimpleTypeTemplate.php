@@ -33,7 +33,7 @@ TEXT;
         $result = '';
         if (!empty($this->constants)) {
             foreach ($this->constants as $constant) {
-                $constantName = str_replace('.', 'Point', $constant['name']);
+                $constantName = strtoupper(str_replace('.', 'Point', $constant['value']));
                 if ($constant['documentation'] != '') {
                     $result .= <<<TEXT
     /**
@@ -43,7 +43,7 @@ TEXT;
 TEXT;
 
                 }
-                $result .= '    const ' . $constantName . " = '{$constant['name']}';\n\n";
+                $result .= '    const ' . $constantName . " = '{$constant['value']}';\n\n";
             }
         }
 

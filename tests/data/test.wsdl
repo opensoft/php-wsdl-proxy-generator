@@ -57,7 +57,7 @@
                     <xs:enumeration value="UNDETERMINED"/>
                     <xs:enumeration value="BUSINESS"/>
                     <xs:enumeration value="RESIDENTIAL"/>
-                    <xs:enumeration value="INSUFFICIENT_DATA"/>
+                    <xs:enumeration value="INSUFFICIENT_data"/>
                     <xs:enumeration value="UNAVAILABLE"/>
                 </xs:restriction>
             </xs:simpleType>

@@ -76,7 +76,7 @@ class {$this->className}
 
 {$this->renderClassMaps()}
 
-    public function __construct(\$soapClientClassName, \$wsdl, \$options)
+    public function __construct(\$soapClientClassName, \$wsdl, array \$options = array())
     {
         if (!empty(self::\$classmap)) {
             foreach(self::\$classmap as \$key => \$value) {

@@ -15,7 +15,14 @@
 spl_autoload_register(function($class)
 {
    if (0 === strpos($class, 'Opensoft\\WsdlProxyGenerator\\Tests')) {
-       $path = __DIR__.'/../tests/'.strtr($class, '\\', '/').'.php';
+       $path = __DIR__.'/'.strtr($class, '\\', '/').'.php';
+       if (file_exists($path) && is_readable($path)) {
+           require_once $path;
+
+           return true;
+       }
+   } else if (0 === strpos($class, 'Opensoft\\WsdlProxyGenerator\\Generated')) {
+       $path = __DIR__.'/data/'.($class = strtr($class, '\\', '/')).'.php';
        if (file_exists($path) && is_readable($path)) {
            require_once $path;
 
