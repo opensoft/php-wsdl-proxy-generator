@@ -33,7 +33,7 @@ class SoapClient extends BaseSoapClient
             if (!isset($options['exceptions'])) {
                 $options['exceptions'] = 1;
             }
-            parent::__construct($wsdl, $options);
+            @parent::__construct($wsdl, $options);
             if ($xdebugIsDisabled) {
                 xdebug_enable();
             }
